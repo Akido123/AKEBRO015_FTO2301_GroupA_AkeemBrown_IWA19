@@ -117,18 +117,17 @@ document.querySelector('[data-search-authors]').appendChild(authors)
  * @type {boolean}
  */
 
-let themeSetting = document.querySelector('[data-settings-theme]').value = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day'
 const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day'
-const v = themeSetting = 'night' || (themeSetting === '' && prefersDarkMode) ? 'night' : 'day';
+const v = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day'
 
 const css = {
     day: {
-      dark: '#333333',
-      light: '#FFFFFF'
+      dark: '10, 10, 20',
+      light: '255, 255, 255',
     },
     night: {
-      dark: '#FFFFFF',
-      light: '#333333'
+      dark: '255, 255, 255',
+      light: '10, 10, 20'
     }
 };
 
@@ -156,7 +155,7 @@ document.querySelector('[data-list-button]').innerHTML = /* html */ [
 
 document.querySelector('[data-search-cancel]').addEventListener('click', () => {(document.querySelector('[data-search-overlay]')).close()})
 document.querySelector('[data-settings-cancel]').addEventListener('click', () => {(document.querySelector('[data-settings-overlay]')).close()})
-document.querySelector('[data-settings-form]').addEventListener('submit', (event) => {event.preventDefault();(document.getElementById('settings')).submit()})
+document.querySelector('[data-settings-form]').addEventListener('submit', () => {(document.getElementById('settings')).submit()})
 document.querySelector('[data-list-close]').addEventListener('click', () => {(document.querySelector('[data-list-active]')).close()})
 
 /**
@@ -176,15 +175,20 @@ function createPreviewsFragment(matches, startIndex, endIndex) {
     return fragment;
   }
 
-    document.querySelector('[data-list-button]').addEventListener('click', () => {
-    document.querySelector(['data-list-items']).appendChild(createPreviewsFragment(matches, page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE))
-    actions.list.updateRemaining()
-    page = page + 1
+document.querySelector('[data-list-button]').addEventListener('click', () => {
+document.querySelector(['data-list-items']).appendChild(createPreviewsFragment(matches, page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE))
+actions.list.updateRemaining()
+page = page + 1
 })
 
-    document.querySelector('[data-header-search]').addEventListener('click', () => {
-    document.querySelector('[data-search-overlay]').showModal()
-    document.querySelector('[data-search-title]').focus();
+document.querySelector('[data-header-search]').addEventListener('click', () => {
+document.querySelector('[data-search-overlay]').showModal()
+document.querySelector('[data-search-title]').focus();
+})
+
+document.querySelector('[data-header-settings]').addEventListener('click', () => {
+document.querySelector('[data-settings-overlay]').showModal()
+document.querySelector('[data-settings-theme]').focus();
 })
 
 /* ---Filter Option--- */
@@ -211,7 +215,7 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
         const genreMatch = filters.genre === 'any'
         for (const genre of book.genres) {
             if (genre === filters.genre) {
-            genreMatch = true
+            genreMatch === true
             break
             }
         }
@@ -275,13 +279,13 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
  * @type {object}
  */
 
-document.querySelector('[data-settings-overlay]').addEventListener('click', (event) => {
+document.querySelector('[data-settings-form]').addEventListener('submit', (event) => {
     event.preventDefault()
     const formData = new FormData(event.target)
     const result = Object.fromEntries(formData)
     document.documentElement.style.setProperty('--color-dark', css[result.theme].dark);
     document.documentElement.style.setProperty('--color-light', css[result.theme].light);
-    document.querySelector('[data-settings-overlay]').showModal()
+    document.querySelector('[data-settings-overlay]').close()
 })
 
 /* ---View Preview--- */
@@ -299,7 +303,7 @@ document.querySelector('[data-list-items]').addEventListener('click', (event) =>
         const previewId = node
     
         for (const singleBook of books) {
-            if (singleBook.id === previewId) active = singleBook
+            if (singleBook.id = previewId) active = singleBook
         } 
     }
 
